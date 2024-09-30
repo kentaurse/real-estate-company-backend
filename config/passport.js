@@ -6,15 +6,15 @@ const User = require('../models/User');
 
 module.exports = function(passport) {
   passport.use(new LocalStrategy({
-      usernameField: 'email',
+      usernameField: 'userId',
       passwordField: 'password'
     },
-    async function(email, password, done) {
+    async function(userId, password, done) {
       try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ userId });
         
         if (!user || ! await user.validPassword(password)) {
-          return done(null, false, { message: 'Incorrect email or password' });
+          return done(null, false, { message: 'Incorrect UserId or password' });
         }
         return done(null, user);
       } catch (error) {

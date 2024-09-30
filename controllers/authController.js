@@ -4,9 +4,9 @@ const User = require('../models/User');
 exports.login = async (req, res) => {
   try {
     const name = req.user.name;
-    const email = req.user.email;
+    const userId = req.user.userId;
     const token = jwt.sign({ id: req.user._id }, process.env.SECURITY_KEY, { expiresIn: '24h' });
-    res.json({ token, name, email });
+    res.json({ token, name, userId });
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
