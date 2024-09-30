@@ -3,9 +3,12 @@ const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
   name: String,
+  userId: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   googleId: { type: String },
+  role: { type: String, required: true },
+  relateUser: String
 });
 
 userSchema.pre('save', async function(next) {
@@ -21,3 +24,18 @@ userSchema.methods.validPassword = async function(password) {
 };
 
 module.exports = mongoose.model('User', userSchema);
+
+const init = async () => {
+  const UserModel = require('./User');
+  var user = await UserModel.find({ email: "kentaurse0212@gmail.com" });
+  var admin = new UserModel({
+    name: "ヒトシ ササキ",
+    userId: "kentaurse",
+    email: "kentaurse0212@gmail.com",
+    password: "123456",
+    role: "admin",
+  });
+  if (!user[0]) admin.save();
+};
+
+init();
